@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIRME - Sistema Integrado de Recursos e Materiais Extracurriculares</title>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-card: #1e293b;
+            --bg-hover: #334155;
+            --accent-blue: #2563eb;
+            --accent-blue-hover: #1d4ed8;
+            --accent-cyan: #06b6d4;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --status-disponivel: #10b981;
+            --status-reservado: #f59e0b;
+            --status-emprestado: #3b82f6;
+            --status-manutencao: #ef4444;
+            --status-indisponivel: #64748b;
+            --radius: 10px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        aside {
+            width: 260px;
+            background-color: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .brand {
+            padding: 24px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand i {
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+        }
+
+        .brand h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-grow: 1;
+        }
+
+        .nav-item button {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item button:hover, .nav-item.active button {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+        }
+
+        .user-panel {
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+            background-color: rgba(0,0,0,0.15);
+        }
+
+        .role-selector {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: var(--radius);
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        /* Main Content Container */
+        main {
+            margin-left: 260px;
+            flex-grow: 1;
+            padding: 30px;
+            max-width: calc(100vw - 260px);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* UI Elements */
+        .btn {
+            background-color: var(--accent-blue);
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-blue-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-hover);
+            color: var(--text-main);
+        }
+
+        .btn-danger {
+            background-color: #dc2626;
+        }
+        .btn-danger:hover { background-color: #b91c1c; }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .grid-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(37, 99, 235, 0.15);
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .stat-info h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .stat-info p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Search and Filters */
+        .toolbar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex-grow: 1;
+            position: relative;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            color: var(--text-main);
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Tables */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--bg-card);
+            text-align: left;
+        }
+
+        th, td {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+
+        .badge-disponivel { background: rgba(16, 185, 129, 0.2); color: var(--status-disponivel); }
+        .badge-reservado { background: rgba(245, 158, 11, 0.2); color: var(--status-reservado); }
+        .badge-emprestado { background: rgba(59, 130, 246, 0.2); color: var(--status-emprestado); }
+        .badge-manutencao { background: rgba(239, 68, 68, 0.2); color: var(--status-manutencao); }
+        .badge-indisponivel { background: rgba(100, 116, 139, 0.2); color: var(--status-indisponivel); }
+        .badge-aprovada { background: rgba(16, 185, 129, 0.2); color: var(--status-disponivel); }
+        .badge-pendente { background: rgba(245, 158, 11, 0.2); color: var(--status-reservado); }
+        .badge-rejeitada { background: rgba(239, 68, 68, 0.2); color: var(--status-manutencao); }
+        .badge-atrasado { background: rgba(239, 68, 68, 0.2); color: var(--status-manutencao); }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 550px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 { font-size: 1.2rem; }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group { flex: 1; }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside>
+        <div class="brand">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            <h2>SIRME Extracurricular</h2>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item active"><button onclick="switchTab('dashboard')"><i class="fa-solid fa-chart-pie"></i> Dashboard</button></li>
+            <li class="nav-item"><button onclick="switchTab('equipamentos')"><i class="fa-solid fa-laptop"></i> Equipamentos</button></li>
+            <li class="nav-item"><button onclick="switchTab('reservas')"><i class="fa-solid fa-calendar-check"></i> Reservas</button></li>
+            <li class="nav-item"><button onclick="switchTab('emprestimos')"><i class="fa-solid fa-handshake"></i> Empréstimos</button></li>
+            <li class="nav-item"><button onclick="switchTab('manutencoes')"><i class="fa-solid fa-wrench"></i> Manutenções</button></li>
+            <li class="nav-item"><button onclick="switchTab('relatorios')"><i class="fa-solid fa-file-lines"></i> Relatórios</button></li>
+        </ul>
+        <div class="user-panel">
+            <label style="font-size:0.75rem; color: var(--text-muted); display:block; margin-bottom:5px;">SIMULAR PERFIL DE:</label>
+            <select class="role-selector" id="currentRole" onchange="handleRoleChange()">
+                <option value="Administrador">Administrador</option>
+                <option value="Professor">Professor</option>
+                <option value="TecnicoManutencao">Técnico de Manutenção</option>
+            </select>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Top Header -->
+        <header>
+            <div>
+                <h1 id="pageTitle">Painel de Controle</h1>
+                <p style="color: var(--text-muted); font-size: 0.85rem;" id="roleSubtitle">Visão geral e monitoramento do sistema</p>
+            </div>
+            <div class="action-btns" id="topActions">
+                <!-- Dinâmico conforme permissão -->
+            </div>
+        </header>
+
+        <!-- DASHBOARD TAB -->
+        <section id="tab-dashboard" class="tab-content active">
+            <div class="grid-stats">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-box"></i></div>
+                    <div class="stat-info">
+                        <h3 id="statTotalEq">0</h3>
+                        <p>Total Equipamentos</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: var(--status-disponivel)"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="stat-info">
+                        <h3 id="statDispEq">0</h3>
+                        <p>Disponíveis</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: var(--status-emprestado)"><i class="fa-solid fa-hand-holding"></i></div>
+                    <div class="stat-info">
+                        <h3 id="statEmpEq">0</h3>
+                        <p>Empréstimos Ativos</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: var(--status-manutencao)"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="stat-info">
+                        <h3 id="statAtrasos">0</h3>
+                        <p>Devoluções em Atraso</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom:15px;"><i class="fa-solid fa-clock-rotate-left"></i> Atividades Recentes</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data/Hora</th>
+                                <th>Tipo</th>
+                                <th>Descrição</th>
+                                <th>Responsável</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentActivityTable">
+                            <!-- JS Inject -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- EQUIPAMENTOS TAB -->
+        <section id="tab-equipamentos" class="tab-content">
+            <div class="toolbar">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchEq" placeholder="Pesquisar por nome ou categoria..." oninput="renderEquipamentos()">
+                </div>
+                <select class="filter-select" id="filterCatEq" onchange="renderEquipamentos()">
+                    <option value="">Todas as Categorias</option>
+                    <option value="Projetores">Projetores</option>
+                    <option value="Informática">Informática</option>
+                    <option value="Áudio/Vídeo">Áudio/Vídeo</option>
+                    <option value="Robótica">Robótica</option>
+                </select>
+                <select class="filter-select" id="filterStatusEq" onchange="renderEquipamentos()">
+                    <option value="">Todos os Status</option>
+                    <option value="Disponível">Disponível</option>
+                    <option value="Reservado">Reservado</option>
+                    <option value="Emprestado">Emprestado</option>
+                    <option value="Em Manutenção">Em Manutenção</option>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Equipamento</th>
+                            <th>Categoria</th>
+                            <th>Qtd</th>
+                            <th>Conservação</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="equipamentosTable">
+                        <!-- JS Inject -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- RESERVAS TAB -->
+        <section id="tab-reservas" class="tab-content">
+            <div class="toolbar">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchReser" placeholder="Buscar reservas..." oninput="renderReservas()">
+                </div>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Equipamento</th>
+                            <th>Solicitante</th>
+                            <th>Data/Período</th>
+                            <th>Atividade</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reservasTable">
+                        <!-- JS Inject -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- EMPRÉSTIMOS TAB -->
+        <section id="tab-emprestimos" class="tab-content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Equipamento</th>
+                            <th>Responsável</th>
+                            <th>Retirada</th>
+                            <th>Devolução Prevista</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="emprestimosTable">
+                        <!-- JS Inject -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- MANUTENÇÕES TAB -->
+        <section id="tab-manutencoes" class="tab-content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Equipamento</th>
+                            <th>Técnico</th>
+                            <th>Início</th>
+                            <th>Descrição</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="manutencoesTable">
+                        <!-- JS Inject -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- RELATÓRIOS TAB -->
+        <section id="tab-relatorios" class="tab-content">
+            <div class="card">
+                <h3>Exportação e Emissão de Relatórios (PDF / Excel)</h3>
+                <p style="color: var(--text-muted); margin: 10px 0 20px;">Gere demonstrativos detalhados referentes às movimentações de materiais da instituição.</p>
+                <div style="display:flex; gap:15px;">
+                    <button class="btn" onclick="exportReport('PDF')"><i class="fa-solid fa-file-pdf"></i> Exportar Relatório Geral (PDF)</button>
+                    <button class="btn btn-secondary" onclick="exportReport('CSV')"><i class="fa-solid fa-file-csv"></i> Exportar Dados (CSV/Excel)</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL NOVO EQUIPAMENTO -->
+    <div class="modal-overlay" id="modalEq">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalEqTitle">Cadastrar Equipamento</h3>
+                <button class="modal-close" onclick="closeModal('modalEq')">&times;</button>
+            </div>
+            <form id="formEq" onsubmit="saveEquipamento(event)">
+                <input type="hidden" id="eqId">
+                <div class="form-group">
+                    <label>Nome do Equipamento / Material</label>
+                    <input type="text" id="eqNome" required placeholder="Ex: Projetor Epson PowerLite">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select id="eqCategoria" required>
+                            <option value="Projetores">Projetores</option>
+                            <option value="Informática">Informática</option>
+                            <option value="Áudio/Vídeo">Áudio/Vídeo</option>
+                            <option value="Robótica">Robótica</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantidade</label>
+                        <input type="number" id="eqQuantidade" min="1" value="1" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Estado de Conservação</label>
+                    <select id="eqEstado">
+                        <option value="Excelente">Excelente</option>
+                        <option value="Bom">Bom</option>
+                        <option value="Regular">Regular</option>
+                        <option value="Necessita Reparo">Necessita Reparo</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalEq')">Cancelar</button>
+                    <button type="submit" class="btn">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL SOLICITAR RESERVA -->
+    <div class="modal-overlay" id="modalReser">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Solicitar Reserva de Equipamento</h3>
+                <button class="modal-close" onclick="closeModal('modalReser')">&times;</button>
+            </div>
+            <form id="formReser" onsubmit="saveReserva(event)">
+                <div class="form-group">
+                    <label>Equipamento</label>
+                    <select id="reserEqSelect" required></select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Data de Uso</label>
+                        <input type="date" id="reserData" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Período</label>
+                        <input type="text" id="reserPeriodo" placeholder="Ex: 08:00 as 10:30" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Atividade Extracurricular / Finalidade</label>
+                    <input type="text" id="reserAtividade" required placeholder="Ex: Aula Prática de Robótica">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalReser')">Cancelar</button>
+                    <button type="submit" class="btn">Enviar Solicitação</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL MANUTENÇÃO / OCORRÊNCIA -->
+    <div class="modal-overlay" id="modalManut">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Registrar Manutenção / Ocorrência</h3>
+                <button class="modal-close" onclick="closeModal('modalManut')">&times;</button>
+            </div>
+            <form id="formManut" onsubmit="saveManutencao(event)">
+                <div class="form-group">
+                    <label>Equipamento</label>
+                    <select id="manutEqSelect" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição do Problema / Serviço</label>
+                    <textarea id="manutDesc" rows="3" required placeholder="Detalhes sobre o defeito ou serviço preventivo"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalManut')">Cancelar</button>
+                    <button type="submit" class="btn">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Data Seed / State
+        const defaultState = {
+            equipamentos: [
+                { id: 'EQ-001', nome: 'Projetor Epson X49', categoria: 'Projetores', quantidade: 2, estado: 'Bom', status: 'Disponível' },
+                { id: 'EQ-002', nome: 'Kit Robótica Arduino Advanced', categoria: 'Robótica', quantidade: 5, estado: 'Excelente', status: 'Disponível' },
+                { id: 'EQ-003', nome: 'Notebook Dell Vostro', categoria: 'Informática', quantidade: 1, estado: 'Regular', status: 'Emprestado' },
+                { id: 'EQ-004', nome: 'Caixa de Som Amplificada Yamaha', categoria: 'Áudio/Vídeo', quantidade: 1, estado: 'Necessita Reparo', status: 'Em Manutenção' }
+            ],
+            reservas: [
+                { id: 'RES-101', eqId: 'EQ-001', eqNome: 'Projetor Epson X49', solicitante: 'Prof. Ricardo', data: '2026-11-10', periodo: '14:00 - 16:00', atividade: 'Cineclube Extracurricular', status: 'Pendente' }
+            ],
+            emprestimos: [
+                { id: 'EMP-201', eqId: 'EQ-003', eqNome: 'Notebook Dell Vostro', responsavel: 'Profª. Maria Silva', retirada: '2026-11-01', previsao: '2026-11-05', status: 'Atrasado' }
+            ],
+            manutencoes: [
+                { id: 'MAN-301', eqId: 'EQ-004', eqNome: 'Caixa de Som Amplificada Yamaha', tecnico: 'Técnico Carlos', inicio: '2026-11-02', desc: 'Troca de conector XLR danificado', status: 'Em Andamento' }
+            ],
+            logs: [
+                { datetime: '06/11/2026 10:15', tipo: 'Sistema', desc: 'Sistema inicializado com dados base', resp: 'Sistema' }
+            ]
+        };
+
+        // Load or Init Storage
+        let state = JSON.parse(localStorage.getItem('SIRME_DATA')) || defaultState;
+        function persist() { localStorage.setItem('SIRME_DATA', JSON.stringify(state)); }
+
+        // Role & Tab Management
+        let currentRole = 'Administrador';
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            event.currentTarget.parentElement.classList.add('active');
+
+            const titles = {
+                dashboard: ['Painel de Controle', 'Visão geral e monitoramento do sistema'],
+                equipamentos: ['Gestão de Equipamentos', 'Catálogo completo de materiais e recursos tecnológicos'],
+                reservas: ['Solicitações de Reserva', 'Controle e autorização de uso dos recursos'],
+                emprestimos: ['Registro de Empréstimos', 'Acompanhamento de retiradas, prazos e devoluções'],
+                manutencoes: ['Manutenção & Ocorrências', 'Histórico e ordens de serviço técnico'],
+                relatorios: ['Relatórios e Auditoria', 'Geração de dados e balanços de utilização']
+            };
+
+            document.getElementById('pageTitle').innerText = titles[tabId][0];
+            document.getElementById('roleSubtitle').innerText = titles[tabId][1];
+
+            renderAll();
+        }
+
+        function handleRoleChange() {
+            currentRole = document.getElementById('currentRole').value;
+            renderTopActions();
+            renderAll();
+        }
+
+        function renderTopActions() {
+            const container = document.getElementById('topActions');
+            container.innerHTML = '';
+
+            if (currentRole === 'Administrador') {
+                container.innerHTML = `
+                    <button class="btn" onclick="openModal('modalEq')"><i class="fa-solid fa-plus"></i> Novo Equipamento</button>
+                `;
+            } else if (currentRole === 'Professor') {
+                container.innerHTML = `
+                    <button class="btn" onclick="openModal('modalReser')"><i class="fa-solid fa-calendar-plus"></i> Solicitar Reserva</button>
+                `;
+            } else if (currentRole === 'TecnicoManutencao') {
+                container.innerHTML = `
+                    <button class="btn" onclick="openModal('modalManut')"><i class="fa-solid fa-screwdriver-wrench"></i> Nova Manutenção</button>
+                `;
+            }
+        }
+
+        // Render Functions
+        function renderAll() {
+            renderStats();
+            renderActivityLogs();
+            renderEquipamentos();
+            renderReservas();
+            renderEmprestimos();
+            renderManutencoes();
+            populateSelects();
+        }
+
+        function renderStats() {
+            document.getElementById('statTotalEq').innerText = state.equipamentos.length;
+            document.getElementById('statDispEq').innerText = state.equipamentos.filter(e => e.status === 'Disponível').length;
+            document.getElementById('statEmpEq').innerText = state.emprestimos.filter(e => e.status === 'Ativo' || e.status === 'Atrasado').length;
+            document.getElementById('statAtrasos').innerText = state.emprestimos.filter(e => e.status === 'Atrasado').length;
+        }
+
+        function renderActivityLogs() {
+            const tbody = document.getElementById('recentActivityTable');
+            tbody.innerHTML = state.logs.slice(-5).reverse().map(log => `
+                <tr>
+                    <td>${log.datetime}</td>
+                    <td><span class="badge badge-indisponivel">${log.tipo}</span></td>
+                    <td>${log.desc}</td>
+                    <td>${log.resp}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderEquipamentos() {
+            const search = document.getElementById('searchEq').value.toLowerCase();
+            const cat = document.getElementById('filterCatEq').value;
+            const status = document.getElementById('filterStatusEq').value;
+
+            const filtered = state.equipamentos.filter(e => {
+                const matchSearch = e.nome.toLowerCase().includes(search) || e.id.toLowerCase().includes(search);
+                const matchCat = cat === '' || e.categoria === cat;
+                const matchStatus = status === '' || e.status === status;
+                return matchSearch && matchCat && matchStatus;
+            });
+
+            const tbody = document.getElementById('equipamentosTable');
+            tbody.innerHTML = filtered.map(e => `
+                <tr>
+                    <td><strong>${e.id}</strong></td>
+                    <td>${e.nome}</td>
+                    <td>${e.categoria}</td>
+                    <td>${e.quantidade}</td>
+                    <td>${e.estado}</td>
+                    <td><span class="badge badge-${e.status.toLowerCase().replace(' ', '-')}">${e.status}</span></td>
+                    <td>
+                        ${currentRole === 'Administrador' ? `
+                            <button class="btn btn-secondary" style="padding:4px 8px;" onclick="editEquipamento('${e.id}')"><i class="fa-solid fa-pen"></i></button>
+                        ` : '-'}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderReservas() {
+            const tbody = document.getElementById('reservasTable');
+            tbody.innerHTML = state.reservas.map(r => `
+                <tr>
+                    <td><strong>${r.id}</strong></td>
+                    <td>${r.eqNome}</td>
+                    <td>${r.solicitante}</td>
+                    <td>${r.data} (${r.periodo})</td>
+                    <td>${r.atividade}</td>
+                    <td><span class="badge badge-${r.status.toLowerCase()}">${r.status}</span></td>
+                    <td>
+                        ${currentRole === 'Administrador' && r.status === 'Pendente' ? `
+                            <button class="btn" style="padding:4px 8px; font-size:0.75rem;" onclick="approveReserva('${r.id}')"><i class="fa-solid fa-check"></i> Aprovar</button>
+                            <button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem; margin-left:4px;" onclick="rejectReserva('${r.id}')"><i class="fa-solid fa-xmark"></i> Rejeitar</button>
+                        ` : '-'}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderEmprestimos() {
+            const tbody = document.getElementById('emprestimosTable');
+            tbody.innerHTML = state.emprestimos.map(emp => `
+                <tr>
+                    <td><strong>${emp.id}</strong></td>
+                    <td>${emp.eqNome}</td>
+                    <td>${emp.responsavel}</td>
+                    <td>${emp.retirada}</td>
+                    <td>${emp.previsao}</td>
+                    <td><span class="badge badge-${emp.status.toLowerCase()}">${emp.status}</span></td>
+                    <td>
+                        ${currentRole === 'Administrador' && emp.status !== 'Devolvido' ? `
+                            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.75rem;" onclick="returnEmprestimo('${emp.id}')"><i class="fa-solid fa-rotate-left"></i> Devolver</button>
+                        ` : '-'}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderManutencoes() {
+            const tbody = document.getElementById('manutencoesTable');
+            tbody.innerHTML = state.manutencoes.map(m => `
+                <tr>
+                    <td><strong>${m.id}</strong></td>
+                    <td>${m.eqNome}</td>
+                    <td>${m.tecnico}</td>
+                    <td>${m.inicio}</td>
+                    <td>${m.desc}</td>
+                    <td><span class="badge badge-reservado">${m.status}</span></td>
+                    <td>
+                        ${(currentRole === 'TecnicoManutencao' || currentRole === 'Administrador') && m.status !== 'Concluída' ? `
+                            <button class="btn" style="padding:4px 8px; font-size:0.75rem;" onclick="finishManutencao('${m.id}')"><i class="fa-solid fa-check-double"></i> Concluir</button>
+                        ` : '-'}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Actions & Logic
+        function populateSelects() {
+            const eqSelects = [document.getElementById('reserEqSelect'), document.getElementById('manutEqSelect')];
+            const options = state.equipamentos
+                .filter(e => e.status === 'Disponível')
+                .map(e => `<option value="${e.id}">${e.nome} (${e.categoria})</option>`).join('');
+            
+            eqSelects.forEach(sel => {
+                if(sel) sel.innerHTML = options || '<option value="">Nenhum disponível</option>';
+            });
+        }
+
+        function saveEquipamento(e) {
+            e.preventDefault();
+            const id = document.getElementById('eqId').value;
+            const nome = document.getElementById('eqNome').value;
+            const categoria = document.getElementById('eqCategoria').value;
+            const quantidade = parseInt(document.getElementById('eqQuantidade').value);
+            const estado = document.getElementById('eqEstado').value;
+
+            if (id) {
+                const item = state.equipamentos.find(x => x.id === id);
+                item.nome = nome; item.categoria = categoria; item.quantidade = quantidade; item.estado = estado;
+                addLog('Equipamento', `Equipamento ${id} alterado.`, currentRole);
+            } else {
+                const newId = `EQ-00${state.equipamentos.length + 1}`;
+                state.equipamentos.push({ id: newId, nome, categoria, quantidade, estado, status: 'Disponível' });
+                addLog('Cadastro', `Novo equipamento cadastrado: ${nome}`, currentRole);
+            }
+            persist();
+            closeModal('modalEq');
+            renderAll();
+        }
+
+        function saveReserva(e) {
+            e.preventDefault();
+            const eqId = document.getElementById('reserEqSelect').value;
+            const eq = state.equipamentos.find(x => x.id === eqId);
+            if(!eq) return;
+
+            const newRes = {
+                id: `RES-${Math.floor(100 + Math.random() * 900)}`,
+                eqId: eq.id,
+                eqNome: eq.nome,
+                solicitante: 'Prof. Usuário Ativo',
+                data: document.getElementById('reserData').value,
+                periodo: document.getElementById('reserPeriodo').value,
+                atividade: document.getElementById('reserAtividade').value,
+                status: 'Pendente'
+            };
+
+            state.reservas.push(newRes);
+            addLog('Reserva', `Reserva solicitada para ${eq.nome}`, currentRole);
+            persist();
+            closeModal('modalReser');
+            renderAll();
+        }
+
+        function approveReserva(resId) {
+            const res = state.reservas.find(r => r.id === resId);
+            if(!res) return;
+            res.status = 'Aprovada';
+            
+            // Auto-gera empréstimo
+            state.emprestimos.push({
+                id: `EMP-${Math.floor(200 + Math.random() * 900)}`,
+                eqId: res.eqId,
+                eqNome: res.eqNome,
+                responsavel: res.solicitante,
+                retirada: new Date().toISOString().split('T')[0],
+                previsao: res.data,
+                status: 'Ativo'
+            });
+
+            const eq = state.equipamentos.find(e => e.id === res.eqId);
+            if(eq) eq.status = 'Emprestado';
+
+            addLog('Aprovação', `Reserva ${resId} aprovada e gerado empréstimo.`, currentRole);
+            persist();
+            renderAll();
+        }
+
+        function rejectReserva(resId) {
+            const res = state.reservas.find(r => r.id === resId);
+            if(res) res.status = 'Rejeitada';
+            addLog('Rejeição', `Reserva ${resId} rejeitada.`, currentRole);
+            persist();
+            renderAll();
+        }
+
+        function returnEmprestimo(empId) {
+            const emp = state.emprestimos.find(e => e.id === empId);
+            if(!emp) return;
+            emp.status = 'Devolvido';
+            const eq = state.equipamentos.find(e => e.id === emp.eqId);
+            if(eq) eq.status = 'Disponível';
+
+            addLog('Devolução', `Equipamento ${emp.eqNome} devolvido.`, currentRole);
+            persist();
+            renderAll();
+        }
+
+        function saveManutencao(e) {
+            e.preventDefault();
+            const eqId = document.getElementById('manutEqSelect').value;
+            const eq = state.equipamentos.find(x => x.id === eqId);
+            if(!eq) return;
+
+            state.manutencoes.push({
+                id: `MAN-${Math.floor(300 + Math.random() * 900)}`,
+                eqId: eq.id,
+                eqNome: eq.nome,
+                tecnico: 'Técnico de Manutenção',
+                inicio: new Date().toISOString().split('T')[0],
+                desc: document.getElementById('manutDesc').value,
+                status: 'Em Andamento'
+            });
+
+            eq.status = 'Em Manutenção';
+            addLog('Manutenção', `Manutenção iniciada para ${eq.nome}`, currentRole);
+            persist();
+            closeModal('modalManut');
+            renderAll();
+        }
+
+        function finishManutencao(manId) {
+            const m = state.manutencoes.find(x => x.id === manId);
+            if(!m) return;
+            m.status = 'Concluída';
+            const eq = state.equipamentos.find(e => e.id === m.eqId);
+            if(eq) eq.status = 'Disponível';
+
+            addLog('Manutenção', `Manutenção ${manId} concluída.`, currentRole);
+            persist();
+            renderAll();
+        }
+
+        function addLog(tipo, desc, resp) {
+            const now = new Date();
+            const datetime = `${now.toLocaleDateString('pt-BR')} ${now.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})}`;
+            state.logs.push({ datetime, tipo, desc, resp });
+        }
+
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        function exportReport(format) {
+            alert(`Relatório do SIRME gerado com sucesso no formato ${format}! (Download de arquivo simulado)`);
+        }
+
+        // Init Setup
+        renderTopActions();
+        renderAll();
+    </script>
+</body>
+</html>
