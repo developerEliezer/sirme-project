@@ -28,6 +28,19 @@
             --radius: 10px;
         }
 
+        /* Variáveis para o Modo Claro */
+        body.light-mode {
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-hover: #e2e8f0;
+            --accent-blue: #2563eb;
+            --accent-blue-hover: #1d4ed8;
+            --accent-cyan: #0284c7;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -41,6 +54,7 @@
             display: flex;
             min-height: 100vh;
             overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* Sidebar */
@@ -53,6 +67,7 @@
             position: fixed;
             height: 100vh;
             z-index: 100;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .brand {
@@ -107,7 +122,7 @@
         .user-panel {
             padding: 16px;
             border-top: 1px solid var(--border-color);
-            background-color: rgba(0,0,0,0.15);
+            background-color: rgba(0,0,0,0.05);
         }
 
         .role-selector {
@@ -141,9 +156,35 @@
             font-weight: 700;
         }
 
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
         .action-btns {
             display: flex;
             gap: 12px;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle-btn {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle-btn:hover {
+            background-color: var(--bg-hover);
         }
 
         /* UI Elements */
@@ -173,6 +214,7 @@
 
         .btn-danger {
             background-color: #dc2626;
+            color: #fff;
         }
         .btn-danger:hover { background-color: #b91c1c; }
 
@@ -182,6 +224,8 @@
             border-radius: var(--radius);
             padding: 20px;
             margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .grid-stats {
@@ -199,6 +243,8 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .stat-icon {
@@ -287,13 +333,17 @@
         }
 
         th {
-            background-color: rgba(0, 0, 0, 0.2);
+            background-color: rgba(0, 0, 0, 0.05);
             color: var(--text-muted);
             font-weight: 600;
         }
 
+        body.light-mode th {
+            background-color: #f1f5f9;
+        }
+
         tr:hover {
-            background-color: rgba(255, 255, 255, 0.02);
+            background-color: rgba(100, 100, 100, 0.03);
         }
 
         /* Status Badges */
@@ -306,21 +356,21 @@
             display: inline-block;
         }
 
-        .badge-disponivel { background: rgba(16, 185, 129, 0.2); color: var(--status-disponivel); }
-        .badge-reservado { background: rgba(245, 158, 11, 0.2); color: var(--status-reservado); }
-        .badge-emprestado { background: rgba(59, 130, 246, 0.2); color: var(--status-emprestado); }
-        .badge-manutencao { background: rgba(239, 68, 68, 0.2); color: var(--status-manutencao); }
-        .badge-indisponivel { background: rgba(100, 116, 139, 0.2); color: var(--status-indisponivel); }
-        .badge-aprovada { background: rgba(16, 185, 129, 0.2); color: var(--status-disponivel); }
-        .badge-pendente { background: rgba(245, 158, 11, 0.2); color: var(--status-reservado); }
-        .badge-rejeitada { background: rgba(239, 68, 68, 0.2); color: var(--status-manutencao); }
-        .badge-atrasado { background: rgba(239, 68, 68, 0.2); color: var(--status-manutencao); }
+        .badge-disponivel { background: rgba(16, 185, 129, 0.15); color: var(--status-disponivel); }
+        .badge-reservado { background: rgba(245, 158, 11, 0.15); color: var(--status-reservado); }
+        .badge-emprestado { background: rgba(59, 130, 246, 0.15); color: var(--status-emprestado); }
+        .badge-manutencao { background: rgba(239, 68, 68, 0.15); color: var(--status-manutencao); }
+        .badge-indisponivel { background: rgba(100, 116, 139, 0.15); color: var(--status-indisponivel); }
+        .badge-aprovada { background: rgba(16, 185, 129, 0.15); color: var(--status-disponivel); }
+        .badge-pendente { background: rgba(245, 158, 11, 0.15); color: var(--status-reservado); }
+        .badge-rejeitada { background: rgba(239, 68, 68, 0.15); color: var(--status-manutencao); }
+        .badge-atrasado { background: rgba(239, 68, 68, 0.15); color: var(--status-manutencao); }
 
         /* Modals */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -342,7 +392,7 @@
             width: 90%;
             max-width: 550px;
             padding: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
 
         .modal-header {
@@ -410,12 +460,12 @@
             <h2>SIRME Extracurricular</h2>
         </div>
         <ul class="nav-links">
-            <li class="nav-item active"><button onclick="switchTab('dashboard')"><i class="fa-solid fa-chart-pie"></i> Dashboard</button></li>
-            <li class="nav-item"><button onclick="switchTab('equipamentos')"><i class="fa-solid fa-laptop"></i> Equipamentos</button></li>
-            <li class="nav-item"><button onclick="switchTab('reservas')"><i class="fa-solid fa-calendar-check"></i> Reservas</button></li>
-            <li class="nav-item"><button onclick="switchTab('emprestimos')"><i class="fa-solid fa-handshake"></i> Empréstimos</button></li>
-            <li class="nav-item"><button onclick="switchTab('manutencoes')"><i class="fa-solid fa-wrench"></i> Manutenções</button></li>
-            <li class="nav-item"><button onclick="switchTab('relatorios')"><i class="fa-solid fa-file-lines"></i> Relatórios</button></li>
+            <li class="nav-item active"><button onclick="switchTab('dashboard', event)"><i class="fa-solid fa-chart-pie"></i> Dashboard</button></li>
+            <li class="nav-item"><button onclick="switchTab('equipamentos', event)"><i class="fa-solid fa-laptop"></i> Equipamentos</button></li>
+            <li class="nav-item"><button onclick="switchTab('reservas', event)"><i class="fa-solid fa-calendar-check"></i> Reservas</button></li>
+            <li class="nav-item"><button onclick="switchTab('emprestimos', event)"><i class="fa-solid fa-handshake"></i> Empréstimos</button></li>
+            <li class="nav-item"><button onclick="switchTab('manutencoes', event)"><i class="fa-solid fa-wrench"></i> Manutenções</button></li>
+            <li class="nav-item"><button onclick="switchTab('relatorios', event)"><i class="fa-solid fa-file-lines"></i> Relatórios</button></li>
         </ul>
         <div class="user-panel">
             <label style="font-size:0.75rem; color: var(--text-muted); display:block; margin-bottom:5px;">SIMULAR PERFIL DE:</label>
@@ -435,8 +485,13 @@
                 <h1 id="pageTitle">Painel de Controle</h1>
                 <p style="color: var(--text-muted); font-size: 0.85rem;" id="roleSubtitle">Visão geral e monitoramento do sistema</p>
             </div>
-            <div class="action-btns" id="topActions">
-                <!-- Dinâmico conforme permissão -->
+            <div class="header-right">
+                <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Alternar Tema (Claro/Escuro)">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+                <div class="action-btns" id="topActions">
+                    <!-- Dinâmico conforme permissão -->
+                </div>
             </div>
         </header>
 
@@ -613,7 +668,7 @@
             <div class="card">
                 <h3>Exportação e Emissão de Relatórios (PDF / Excel)</h3>
                 <p style="color: var(--text-muted); margin: 10px 0 20px;">Gere demonstrativos detalhados referentes às movimentações de materiais da instituição.</p>
-                <div style="display:flex; gap:15px;">
+                <div style="display:flex; gap:15px; flex-wrap:wrap;">
                     <button class="btn" onclick="exportReport('PDF')"><i class="fa-solid fa-file-pdf"></i> Exportar Relatório Geral (PDF)</button>
                     <button class="btn btn-secondary" onclick="exportReport('CSV')"><i class="fa-solid fa-file-csv"></i> Exportar Dados (CSV/Excel)</button>
                 </div>
@@ -751,15 +806,36 @@
         let state = JSON.parse(localStorage.getItem('SIRME_DATA')) || defaultState;
         function persist() { localStorage.setItem('SIRME_DATA', JSON.stringify(state)); }
 
+        // Theme Handling
+        function initTheme() {
+            const savedTheme = localStorage.getItem('SIRME_THEME') || 'dark';
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                document.getElementById('themeIcon').className = 'fa-solid fa-sun';
+            } else {
+                document.body.classList.remove('light-mode');
+                document.getElementById('themeIcon').className = 'fa-solid fa-moon';
+            }
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('SIRME_THEME', isLight ? 'light' : 'dark');
+            document.getElementById('themeIcon').className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        }
+
         // Role & Tab Management
         let currentRole = 'Administrador';
 
-        function switchTab(tabId) {
+        function switchTab(tabId, event) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             
             document.getElementById(`tab-${tabId}`).classList.add('active');
-            event.currentTarget.parentElement.classList.add('active');
+            if (event && event.currentTarget) {
+                event.currentTarget.parentElement.classList.add('active');
+            }
 
             const titles = {
                 dashboard: ['Painel de Controle', 'Visão geral e monitoramento do sistema'],
@@ -851,31 +927,31 @@
                     <td>${e.categoria}</td>
                     <td>${e.quantidade}</td>
                     <td>${e.estado}</td>
-                    <td><span class="badge badge-${e.status.toLowerCase().replace(' ', '-')}">${e.status}</span></td>
+                    <td><span class="badge badge-${getStatusBadgeClass(e.status)}">${e.status}</span></td>
                     <td>
-                        ${currentRole === 'Administrador' ? `
-                            <button class="btn btn-secondary" style="padding:4px 8px;" onclick="editEquipamento('${e.id}')"><i class="fa-solid fa-pen"></i></button>
-                        ` : '-'}
+                        ${currentRole === 'Administrador' ? `<button class="btn btn-secondary" style="padding:4px 8px; font-size:0.8rem;" onclick="deleteEquipamento('${e.id}')"><i class="fa-solid fa-trash"></i></button>` : '<em>Visualizador</em>'}
                     </td>
                 </tr>
             `).join('');
         }
 
         function renderReservas() {
+            const search = document.getElementById('searchReser').value.toLowerCase();
+            const filtered = state.reservas.filter(r => r.eqNome.toLowerCase().includes(search) || r.solicitante.toLowerCase().includes(search));
+            
             const tbody = document.getElementById('reservasTable');
-            tbody.innerHTML = state.reservas.map(r => `
+            tbody.innerHTML = filtered.map(r => `
                 <tr>
                     <td><strong>${r.id}</strong></td>
                     <td>${r.eqNome}</td>
                     <td>${r.solicitante}</td>
                     <td>${r.data} (${r.periodo})</td>
                     <td>${r.atividade}</td>
-                    <td><span class="badge badge-${r.status.toLowerCase()}">${r.status}</span></td>
+                    <td><span class="badge badge-${getReservaBadgeClass(r.status)}">${r.status}</span></td>
                     <td>
                         ${currentRole === 'Administrador' && r.status === 'Pendente' ? `
-                            <button class="btn" style="padding:4px 8px; font-size:0.75rem;" onclick="approveReserva('${r.id}')"><i class="fa-solid fa-check"></i> Aprovar</button>
-                            <button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem; margin-left:4px;" onclick="rejectReserva('${r.id}')"><i class="fa-solid fa-xmark"></i> Rejeitar</button>
-                        ` : '-'}
+                            <button class="btn" style="padding:4px 8px; font-size:0.8rem; display:inline-block;" onclick="aprovarReserva('${r.id}')">Aprovar</button>
+                        ` : '<span>-</span>'}
                     </td>
                 </tr>
             `).join('');
@@ -890,11 +966,9 @@
                     <td>${emp.responsavel}</td>
                     <td>${emp.retirada}</td>
                     <td>${emp.previsao}</td>
-                    <td><span class="badge badge-${emp.status.toLowerCase()}">${emp.status}</span></td>
+                    <td><span class="badge badge-${emp.status === 'Atrasado' ? 'atrasado' : 'emprestado'}">${emp.status}</span></td>
                     <td>
-                        ${currentRole === 'Administrador' && emp.status !== 'Devolvido' ? `
-                            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.75rem;" onclick="returnEmprestimo('${emp.id}')"><i class="fa-solid fa-rotate-left"></i> Devolver</button>
-                        ` : '-'}
+                        ${currentRole === 'Administrador' ? `<button class="btn btn-secondary" style="padding:4px 8px; font-size:0.8rem;" onclick="devolverEmprestimo('${emp.id}')">Devolver</button>` : '-'}
                     </td>
                 </tr>
             `).join('');
@@ -909,169 +983,156 @@
                     <td>${m.tecnico}</td>
                     <td>${m.inicio}</td>
                     <td>${m.desc}</td>
-                    <td><span class="badge badge-reservado">${m.status}</span></td>
+                    <td><span class="badge badge-manutencao">${m.status}</span></td>
                     <td>
-                        ${(currentRole === 'TecnicoManutencao' || currentRole === 'Administrador') && m.status !== 'Concluída' ? `
-                            <button class="btn" style="padding:4px 8px; font-size:0.75rem;" onclick="finishManutencao('${m.id}')"><i class="fa-solid fa-check-double"></i> Concluir</button>
-                        ` : '-'}
+                        ${currentRole === 'TecnicoManutencao' || currentRole === 'Administrador' ? `<button class="btn" style="padding:4px 8px; font-size:0.8rem;" onclick="concluirManutencao('${m.id}')">Concluir</button>` : '-'}
                     </td>
                 </tr>
             `).join('');
         }
 
-        // Actions & Logic
         function populateSelects() {
-            const eqSelects = [document.getElementById('reserEqSelect'), document.getElementById('manutEqSelect')];
-            const options = state.equipamentos
-                .filter(e => e.status === 'Disponível')
-                .map(e => `<option value="${e.id}">${e.nome} (${e.categoria})</option>`).join('');
-            
-            eqSelects.forEach(sel => {
-                if(sel) sel.innerHTML = options || '<option value="">Nenhum disponível</option>';
-            });
+            const eqOptions = state.equipamentos.map(e => `<option value="${e.id}">${e.nome} (${e.status})</option>`).join('');
+            const selReser = document.getElementById('reserEqSelect');
+            const selManut = document.getElementById('manutEqSelect');
+            if(selReser) selReser.innerHTML = eqOptions;
+            if(selManut) selManut.innerHTML = eqOptions;
         }
 
+        // Modal Controls
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Actions & CRUD Simulation
         function saveEquipamento(e) {
             e.preventDefault();
-            const id = document.getElementById('eqId').value;
             const nome = document.getElementById('eqNome').value;
             const categoria = document.getElementById('eqCategoria').value;
             const quantidade = parseInt(document.getElementById('eqQuantidade').value);
             const estado = document.getElementById('eqEstado').value;
 
-            if (id) {
-                const item = state.equipamentos.find(x => x.id === id);
-                item.nome = nome; item.categoria = categoria; item.quantidade = quantidade; item.estado = estado;
-                addLog('Equipamento', `Equipamento ${id} alterado.`, currentRole);
-            } else {
-                const newId = `EQ-00${state.equipamentos.length + 1}`;
-                state.equipamentos.push({ id: newId, nome, categoria, quantidade, estado, status: 'Disponível' });
-                addLog('Cadastro', `Novo equipamento cadastrado: ${nome}`, currentRole);
-            }
+            const newId = 'EQ-' + String(state.equipamentos.length + 1).padStart(3, '0');
+            state.equipamentos.push({ id: newId, nome, categoria, quantidade, estado, status: 'Disponível' });
+            state.logs.push({ datetime: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), tipo: 'Equipamento', desc: `Cadastrado: ${nome}`, resp: currentRole });
+            
             persist();
             closeModal('modalEq');
+            document.getElementById('formEq').reset();
             renderAll();
         }
 
         function saveReserva(e) {
             e.preventDefault();
             const eqId = document.getElementById('reserEqSelect').value;
-            const eq = state.equipamentos.find(x => x.id === eqId);
-            if(!eq) return;
+            const eqObj = state.equipamentos.find(x => x.id === eqId);
+            const data = document.getElementById('reserData').value;
+            const periodo = document.getElementById('reserPeriodo').value;
+            const atividade = document.getElementById('reserAtividade').value;
 
-            const newRes = {
-                id: `RES-${Math.floor(100 + Math.random() * 900)}`,
-                eqId: eq.id,
-                eqNome: eq.nome,
-                solicitante: 'Prof. Usuário Ativo',
-                data: document.getElementById('reserData').value,
-                periodo: document.getElementById('reserPeriodo').value,
-                atividade: document.getElementById('reserAtividade').value,
-                status: 'Pendente'
-            };
+            const newId = 'RES-' + Math.floor(100 + Math.random() * 900);
+            state.reservas.push({ id: newId, eqId, eqNome: eqObj ? eqObj.nome : eqId, solicitante: currentRole, data, periodo, atividade, status: 'Pendente' });
+            state.logs.push({ datetime: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), tipo: 'Reserva', desc: `Solicitação para ${eqObj ? eqObj.nome : eqId}`, resp: currentRole });
 
-            state.reservas.push(newRes);
-            addLog('Reserva', `Reserva solicitada para ${eq.nome}`, currentRole);
             persist();
             closeModal('modalReser');
-            renderAll();
-        }
-
-        function approveReserva(resId) {
-            const res = state.reservas.find(r => r.id === resId);
-            if(!res) return;
-            res.status = 'Aprovada';
-            
-            // Auto-gera empréstimo
-            state.emprestimos.push({
-                id: `EMP-${Math.floor(200 + Math.random() * 900)}`,
-                eqId: res.eqId,
-                eqNome: res.eqNome,
-                responsavel: res.solicitante,
-                retirada: new Date().toISOString().split('T')[0],
-                previsao: res.data,
-                status: 'Ativo'
-            });
-
-            const eq = state.equipamentos.find(e => e.id === res.eqId);
-            if(eq) eq.status = 'Emprestado';
-
-            addLog('Aprovação', `Reserva ${resId} aprovada e gerado empréstimo.`, currentRole);
-            persist();
-            renderAll();
-        }
-
-        function rejectReserva(resId) {
-            const res = state.reservas.find(r => r.id === resId);
-            if(res) res.status = 'Rejeitada';
-            addLog('Rejeição', `Reserva ${resId} rejeitada.`, currentRole);
-            persist();
-            renderAll();
-        }
-
-        function returnEmprestimo(empId) {
-            const emp = state.emprestimos.find(e => e.id === empId);
-            if(!emp) return;
-            emp.status = 'Devolvido';
-            const eq = state.equipamentos.find(e => e.id === emp.eqId);
-            if(eq) eq.status = 'Disponível';
-
-            addLog('Devolução', `Equipamento ${emp.eqNome} devolvido.`, currentRole);
-            persist();
+            document.getElementById('formReser').reset();
             renderAll();
         }
 
         function saveManutencao(e) {
             e.preventDefault();
             const eqId = document.getElementById('manutEqSelect').value;
-            const eq = state.equipamentos.find(x => x.id === eqId);
-            if(!eq) return;
+            const eqObj = state.equipamentos.find(x => x.id === eqId);
+            const desc = document.getElementById('manutDesc').value;
 
-            state.manutencoes.push({
-                id: `MAN-${Math.floor(300 + Math.random() * 900)}`,
-                eqId: eq.id,
-                eqNome: eq.nome,
-                tecnico: 'Técnico de Manutenção',
-                inicio: new Date().toISOString().split('T')[0],
-                desc: document.getElementById('manutDesc').value,
-                status: 'Em Andamento'
-            });
+            const newId = 'MAN-' + Math.floor(100 + Math.random() * 900);
+            state.manutencoes.push({ id: newId, eqId, eqNome: eqObj ? eqObj.nome : eqId, tecnico: currentRole, inicio: new Date().toISOString().split('T')[0], desc, status: 'Em Andamento' });
+            if (eqObj) eqObj.status = 'Em Manutenção';
 
-            eq.status = 'Em Manutenção';
-            addLog('Manutenção', `Manutenção iniciada para ${eq.nome}`, currentRole);
+            state.logs.push({ datetime: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), tipo: 'Manutenção', desc: `Ocorrência aberta para ${eqObj ? eqObj.nome : eqId}`, resp: currentRole });
+
             persist();
             closeModal('modalManut');
+            document.getElementById('formManut').reset();
             renderAll();
         }
 
-        function finishManutencao(manId) {
-            const m = state.manutencoes.find(x => x.id === manId);
-            if(!m) return;
-            m.status = 'Concluída';
-            const eq = state.equipamentos.find(e => e.id === m.eqId);
-            if(eq) eq.status = 'Disponível';
+        function aprovarReserva(resId) {
+            const res = state.reservas.find(r => r.id === resId);
+            if (res) {
+                res.status = 'Aprovada';
+                state.logs.push({ datetime: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), tipo: 'Reserva', desc: `Reserva ${resId} aprovada`, resp: currentRole });
+                persist();
+                renderAll();
+            }
+        }
 
-            addLog('Manutenção', `Manutenção ${manId} concluída.`, currentRole);
-            persist();
+        function deleteEquipamento(eqId) {
+            if (confirm('Deseja realmente remover este equipamento?')) {
+                state.equipamentos = state.equipamentos.filter(e => e.id !== eqId);
+                persist();
+                renderAll();
+            }
+        }
+
+        function devolverEmprestimo(empId) {
+            const emp = state.emprestimos.find(e => e.id === empId);
+            if (emp) {
+                const eq = state.equipamentos.find(e => e.id === emp.eqId);
+                if (eq) eq.status = 'Disponível';
+                state.emprestimos = state.emprestimos.filter(e => e.id !== empId);
+                state.logs.push({ datetime: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), tipo: 'Empréstimo', desc: `Devolução registrada para ${emp.eqNome}`, resp: currentRole });
+                persist();
+                renderAll();
+            }
+        }
+
+        function concluirManutencao(manId) {
+            const man = state.manutencoes.find(m => m.id === manId);
+            if (man) {
+                const eq = state.equipamentos.find(e => e.id === man.eqId);
+                if (eq) eq.status = 'Disponível';
+                state.manutencoes = state.manutencoes.filter(m => m.id !== manId);
+                state.logs.push({ datetime: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), tipo: 'Manutenção', desc: `Manutenção concluída para ${man.eqNome}`, resp: currentRole });
+                persist();
+                renderAll();
+            }
+        }
+
+        function exportReport(type) {
+            alert(`Relatório em formato ${type} gerado com sucesso!`);
+        }
+
+        function getStatusBadgeClass(status) {
+            switch(status) {
+                case 'Disponível': return 'disponivel';
+                case 'Reservado': return 'reservado';
+                case 'Emprestado': return 'emprestado';
+                case 'Em Manutenção': return 'manutencao';
+                default: return 'indisponivel';
+            }
+        }
+
+        function getReservaBadgeClass(status) {
+            switch(status) {
+                case 'Aprovada': return 'aprovada';
+                case 'Pendente': return 'pendente';
+                case 'Rejeitada': return 'rejeitada';
+                default: return 'indisponivel';
+            }
+        }
+
+        // Inicialização
+        window.onload = function() {
+            initTheme();
+            renderTopActions();
             renderAll();
-        }
-
-        function addLog(tipo, desc, resp) {
-            const now = new Date();
-            const datetime = `${now.toLocaleDateString('pt-BR')} ${now.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})}`;
-            state.logs.push({ datetime, tipo, desc, resp });
-        }
-
-        function openModal(id) { document.getElementById(id).classList.add('active'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-        function exportReport(format) {
-            alert(`Relatório do SIRME gerado com sucesso no formato ${format}! (Download de arquivo simulado)`);
-        }
-
-        // Init Setup
-        renderTopActions();
-        renderAll();
+        };
     </script>
 </body>
 </html>
